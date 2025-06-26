@@ -1,12 +1,43 @@
 const express = require('express');
+const auth = require('basic-auth');
 const bodyParser = require('body-parser');
 
 const app = express();
 const PORT = process.env.PORT | 3000;
+const USERNAME = process.env.USERNAME;
+const PASSWORD = process.env.PASSWORD;
+
+process.on('SIGINT', () => {
+  console.log('Received SIGINT. Exiting...');
+  process.exit(0);
+});
+
+process.on('SIGTERM', () => {
+  console.log('Received SIGTERM. Exiting...');
+  process.exit(0);
+});
 
 app.use(bodyParser.json());
 
 let obj = null;
+
+if (USERNAME !== undefined && PASSWORD !== undefined) {
+  console.log(`auth activated`);
+  app.use((req, res, next) => {
+    const credentials = auth(req);
+
+    if (
+      !credentials ||
+      credentials.name !== USERNAME ||
+      credentials.pass !== PASSWORD
+    ) {
+      res.set('WWW-Authenticate', 'Basic realm="music-assistant-alexa-api"');
+      return res.status(401).send('Access denied');
+    }
+
+    next();
+  });
+}
 
 // POST endpoint for Music Assistant to push URL
 app.post('/ma/push-url', (req, res) => {
