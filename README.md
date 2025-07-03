@@ -13,6 +13,9 @@ This project provides a simple REST API bridge between [Music Assistant](https:/
 - **Basic Auth**  
   Basic authentication when USERNAME and PASSWORD environment variables are provided. This can also be accomplished with a reverse proxy instead.
 
+- **Replace URL**  
+  The server receives the url from music assistant and forwards this url to alexa, as the public url where the stream is available to alexa may vastly differ to the url that you are accessing music assistant (and is configured in music assistant frontend) you can replace that with a custom public url via environment variables like this:
+
 ## Usage
 
 ### Running Locally
@@ -38,7 +41,13 @@ This project provides a simple REST API bridge between [Music Assistant](https:/
    By default, the server is available without authentication. As this is insecure because the api must be publicly available. You can add basic authentication with the `USERNAME` and `PASSWORD` environment variables:
 
    ```sh
-   USERNAME=admin PASSWORD=test npm start
+   USERNAME=admin PASSWORD=test PUBLIC_URL=https://yourStreamSubDomain.yourDomain npm start
+   ```
+
+   The server receives the url from music assistant and forwards this url to alexa, as the public url where the stream is available to alexa may fastly differ to the url that you are accessing music assistant (and is configured in music assistant frontend) you can replace that with a custom public url via environment variables like this:
+
+   ```sh
+   PUBLIC_URL=https://yourStreamSubDomain.yourDomain npm start
    ```
 
 ### Building and Running with Docker
@@ -58,7 +67,7 @@ This project provides a simple REST API bridge between [Music Assistant](https:/
    You can provide the environment variables like this:
 
    ```sh
-   docker run --rm -d -e PORT=8080 -e USERNAME=admin -e PASSWORD=test -p 8080:8080 music-assistant-alexa-api
+   docker run --rm -d -e PORT=8080 -e USERNAME=admin -e PASSWORD=test -e PUBLIC_URL=https://yourStreamSubDomain.yourDomain -p 8080:8080 music-assistant-alexa-api
    ```
 
 ### Using GitHub Container Registry (GHCR) and Docker Run
@@ -72,7 +81,7 @@ This project provides a simple REST API bridge between [Music Assistant](https:/
 2. **Run the container:**
 
     ```sh
-    docker run --rm -d -p 3000:3000 -e USERNAME=admin -e PASSWORD=test ghcr.io/alams154/music-assistant-alexa-api:latest
+    docker run --rm -d -p 3000:3000 -e USERNAME=admin -e PASSWORD=test -e PUBLIC_URL=https://yourStreamSubDomain.yourDomain ghcr.io/alams154/music-assistant-alexa-api:latest
     ```
 
 ### Using GitHub Container Registry (GHCR) and Docker Compose
@@ -86,6 +95,7 @@ services:
     environment:
       - USERNAME=admin
       - PASSWORD=test
+      - PUBLIC_URL=https://yourStreamSubDomain.yourDomain
 ```
 
 ## API

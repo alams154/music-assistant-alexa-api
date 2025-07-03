@@ -6,6 +6,7 @@ const app = express();
 const PORT = process.env.PORT | 3000;
 const USERNAME = process.env.USERNAME;
 const PASSWORD = process.env.PASSWORD;
+const PUBLIC_URL = process.env.PUBLIC_URL;
 
 process.on('SIGINT', () => {
   console.log('Received SIGINT. Exiting...');
@@ -47,8 +48,14 @@ app.post('/ma/push-url', (req, res) => {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  obj = { streamUrl };
   console.log('Received URL:', streamUrl);
+  if (PUBLIC_URL !== undefined) {
+    const publicUrl = streamUrl.replace(/^[^:]+:\/\/[^/]+/, PUBLIC_URL);
+    console.log('Replaced with Public URL:', publicUrl);
+    obj = { publicUrl };
+  } else {
+    obj = { streamUrl };
+  }
   res.json({ status: 'ok' });
 });
 
