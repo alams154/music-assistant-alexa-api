@@ -3,7 +3,7 @@ const auth = require('basic-auth');
 const bodyParser = require('body-parser');
 
 const app = express();
-const PORT = process.env.PORT | 3000;
+const PORT = process.env.PORT || 3000;
 const USERNAME = process.env.USERNAME;
 const PASSWORD = process.env.PASSWORD;
 
@@ -55,7 +55,7 @@ app.post('/ma/push-url', (req, res) => {
 // GET endpoint for Alexa skill to fetch latest URL and metadata
 app.get('/ma/latest-url', (req, res) => {
   if (!obj) {
-    return res.status(404).json({ error: 'No URL available' });
+    return res.status(404).json({ error: 'No URL available, please check if Music Assistant has pushed a URL to the API' });
   }
 
   res.json({
