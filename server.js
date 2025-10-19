@@ -63,6 +63,7 @@ app.post('/ma/push-url', (req, res) => {
 
 // GET endpoint for Alexa skill to fetch latest URL and metadata
 app.get('/ma/latest-url', (req, res) => {
+  console.log('Fetching latest URL for Alexa skill: ' + req.ip);
   if (!obj) {
     return res.status(404).json({ error: 'No URL available, please check if Music Assistant has pushed a URL to the API' });
   }
