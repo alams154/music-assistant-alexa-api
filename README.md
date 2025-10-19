@@ -13,6 +13,12 @@ This project provides a simple REST API bridge between [Music Assistant](https:/
 - **Basic Auth**  
   Basic authentication when USERNAME and PASSWORD environment variables are provided. This can also be accomplished with a reverse proxy instead.
 
+## Environment Variables
+- **PUBLIC_DOMAIN**: _OPTIONAL_ The domain to use if used with a reverse proxy. If not provided, the domain will use the provided streamURL from POST request.
+- **PORT**: _OPTIONAL_ The port to listen on. Defaults to `3000`.
+- **USERNAME**: _OPTIONAL_ The username to use for basic authentication.
+- **PASSWORD**: _OPTIONAL_ The password to use for basic authentication. 
+
 ## Usage
 
 ### Running Locally

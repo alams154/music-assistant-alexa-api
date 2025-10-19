@@ -6,6 +6,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const USERNAME = process.env.USERNAME;
 const PASSWORD = process.env.PASSWORD;
+const PUBLIC_DOMAIN = process.env.PUBLIC_DOMAIN;
+
 
 process.on('SIGINT', () => {
   console.log('Received SIGINT. Exiting...');
@@ -16,6 +18,13 @@ process.on('SIGTERM', () => {
   console.log('Received SIGTERM. Exiting...');
   process.exit(0);
 });
+
+function replaceUrlDomain(url, newDomain) {
+  if (!newDomain) return url; // Return original if no domain configured
+  const urlObj = new URL(url);
+  return `https://${newDomain}${urlObj.pathname}${urlObj.search}${urlObj.hash}`;
+}
+
 
 app.use(bodyParser.json());
 
@@ -54,16 +63,17 @@ app.post('/ma/push-url', (req, res) => {
 
 // GET endpoint for Alexa skill to fetch latest URL and metadata
 app.get('/ma/latest-url', (req, res) => {
+  console.log('Fetching latest URL for Alexa skill: ' + req.ip);
   if (!obj) {
     return res.status(404).json({ error: 'No URL available, please check if Music Assistant has pushed a URL to the API' });
   }
 
   res.json({
-    streamUrl: obj.streamUrl,
+    streamUrl: PUBLIC_DOMAIN ? replaceUrlDomain(obj.streamUrl, PUBLIC_DOMAIN) : obj.streamUrl,
     title: obj.title,
     artist: obj.artist,
     album: obj.album,
-    imageUrl: obj.imageUrl,
+    imageUrl: obj.imageUrl && PUBLIC_DOMAIN ? replaceUrlDomain(obj.imageUrl, PUBLIC_DOMAIN) : obj.imageUrl,
   });
 });
 
