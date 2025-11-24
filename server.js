@@ -6,6 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const USERNAME = process.env.USERNAME;
 const PASSWORD = process.env.PASSWORD;
+const REWRITE_STREAM_URL_SCHEME = process.env.REWRITE_STREAM_URL_SCHEME;
 
 process.on('SIGINT', () => {
   console.log('Received SIGINT. Exiting...');
@@ -58,8 +59,19 @@ app.get('/ma/latest-url', (req, res) => {
     return res.status(404).json({ error: 'No URL available, please check if Music Assistant has pushed a URL to the API' });
   }
 
+  let streamUrl = obj.streamUrl;
+  if (REWRITE_STREAM_URL_SCHEME && streamUrl) {
+    try {
+      const url = new URL(streamUrl);
+      url.protocol = REWRITE_STREAM_URL_SCHEME;
+      streamUrl = url.toString();
+    } catch (e) {
+      console.error('Failed to rewrite stream URL scheme', e);
+    }
+  }
+
   res.json({
-    streamUrl: obj.streamUrl,
+    streamUrl: streamUrl,
     title: obj.title,
     artist: obj.artist,
     album: obj.album,

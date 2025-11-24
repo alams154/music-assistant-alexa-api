@@ -16,6 +16,7 @@ image:
 env: {}
   # USERNAME: "admin"
   # PASSWORD: "password"
+  # REWRITE_STREAM_URL_SCHEME: "https"
 
 imagePullSecrets: []
 # This is to override the chart name.
