@@ -2,6 +2,7 @@ const express = require('express');
 const auth = require('basic-auth');
 const bodyParser = require('body-parser');
 
+const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const USERNAME = process.env.USERNAME;
@@ -18,6 +19,11 @@ process.on('SIGTERM', () => {
 });
 
 app.use(bodyParser.json());
+
+// Serve workspace favicon at /favicon.ico
+app.get('/favicon.ico', (req, res) => {
+  return res.sendFile(path.join(__dirname, 'favicon.ico'));
+});
 
 let obj = null;
 
@@ -58,13 +64,24 @@ app.get('/ma/latest-url', (req, res) => {
     return res.status(404).json({ error: 'No URL available, please check if Music Assistant has pushed a URL to the API' });
   }
 
-  res.json({
+  const payload = {
     streamUrl: obj.streamUrl,
     title: obj.title,
     artist: obj.artist,
     album: obj.album,
     imageUrl: obj.imageUrl,
-  });
+  };
+
+  // If the client prefers HTML (a browser), return a small HTML page
+  // that includes a favicon so the tab shows an icon. API clients
+  // requesting JSON will continue to receive the unchanged JSON payload.
+  if (req.accepts && req.accepts('html')) {
+    res.set('Content-Type', 'text/html; charset=utf-8');
+    return res.send(`<!doctype html><html><head><meta charset="utf-8"><title>MA Latest URL</title><link rel="icon" href="/favicon.ico"></head><body><pre>${JSON.stringify(payload, null, 2)}</pre></body></html>`);
+  }
+
+  // Default: return JSON for API consumers
+  res.json(payload);
 });
 
 app.listen(PORT, () => {
