@@ -72,15 +72,6 @@ app.get('/ma/latest-url', (req, res) => {
     imageUrl: obj.imageUrl,
   };
 
-  // If the client prefers HTML (a browser), return a small HTML page
-  // that includes a favicon so the tab shows an icon. API clients
-  // requesting JSON will continue to receive the unchanged JSON payload.
-  if (req.accepts && req.accepts('html')) {
-    res.set('Content-Type', 'text/html; charset=utf-8');
-    return res.send(`<!doctype html><html><head><meta charset="utf-8"><title>MA Latest URL</title><link rel="icon" href="/favicon.ico"></head><body><pre>${JSON.stringify(payload, null, 2)}</pre></body></html>`);
-  }
-
-  // Default: return JSON for API consumers
   res.json(payload);
 });
 
