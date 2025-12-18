@@ -1,3 +1,7 @@
+<h2 style="color: white; margin: 0;">🚨 PROJECT HAS MOVED 🚨</h2>
+<h3 style="color: white; margin: 10px 0;">⚠️ THIS REPOSITORY IS NO LONGER ACTIVELY DEVELOPED ⚠️</h3>
+<h3 style="color: white; margin: 10px 0;">⚠️ PLEASE MIGRATE TO THE <a href="https://github.com/alams154/music-assistant-alexa-skill-prototype">PROTOTYPE SKILL</a> ⚠️</h3>
+
 # Music Assistant Alexa API
 
 This project provides a simple REST API bridge between [Music Assistant](https://github.com/music-assistant) and an Alexa skill. It allows Music Assistant to push a stream URL, which can then be fetched by an Alexa skill.
