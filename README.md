@@ -4,6 +4,12 @@
 
 # Music Assistant Alexa API
 
+![Supports aarch64 Architecture][aarch64-shield]
+![Supports amd64 Architecture][amd64-shield]
+![Supports armhf Architecture][armhf-shield]
+![Supports armv7 Architecture][armv7-shield]
+![Supports i386 Architecture][i386-shield]
+
 This project provides a simple REST API bridge between [Music Assistant](https://github.com/music-assistant) and an Alexa skill. It allows Music Assistant to push a stream URL, which can then be fetched by an Alexa skill.
 
 ## Features
@@ -16,6 +22,26 @@ This project provides a simple REST API bridge between [Music Assistant](https:/
 
 - **Basic Auth**  
   Basic authentication when USERNAME and PASSWORD environment variables are provided. This can also be accomplished with a reverse proxy instead.
+
+## Installation Options
+
+### Option 1: Home Assistant Addon (Recommended)
+
+This project is available as a **Home Assistant addon** for easy integration:
+
+1. Add this repository to your Home Assistant addon store: `https://github.com/mcinnes01/music-assistant-alexa-api`
+2. Install the "Music Assistant Alexa API Addon" addon
+3. Configure the addon with your credentials:
+   ```yaml
+   username: your_username
+   password: your_password
+   port: 3000
+   ```
+4. Start the addon
+
+The addon provides the same API functionality with automatic integration into your Home Assistant environment.
+
+### Option 2: Standalone Docker Container
 
 ## Usage
 
@@ -50,7 +76,7 @@ This project provides a simple REST API bridge between [Music Assistant](https:/
 1. **Build the image:**
 
    ```sh
-   docker build -t music-assistant-alexa-api .
+   docker build -f Dockerfile.api -t music-assistant-alexa-api .
    ```
 
 2. **Run the container:**
@@ -127,9 +153,18 @@ Returns `404` if no URL has been pushed yet.
 ## Files
 
 - `server.js` — Express server with the API endpoints.
-- `Dockerfile` — For containerizing the app.
+- `Dockerfile` — Home Assistant addon Dockerfile.
+- `Dockerfile.api` — Standalone Docker container Dockerfile.
 - `package.json` — Project metadata and dependencies.
+- `config.yaml` — Home Assistant addon configuration.
+- `repository.yaml` — Home Assistant addon repository configuration.
 
 ## License
 
 MIT
+
+[aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
+[amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
+[armhf-shield]: https://img.shields.io/badge/armhf-yes-green.svg
+[armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
+[i386-shield]: https://img.shields.io/badge/i386-yes-green.svg

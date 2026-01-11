@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'Dockerfile'
+      - 'Dockerfile.api'
       - '.github/workflows/docker-ghcr.yml'
       - 'package.json'
       - 'package-lock.json'
@@ -28,7 +28,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/music-assistant-alexa-api:latest .
+          docker build -f Dockerfile.api -t ghcr.io/${{ github.repository_owner }}/music-assistant-alexa-api:latest .
 
       - name: Push Docker image
         run: |

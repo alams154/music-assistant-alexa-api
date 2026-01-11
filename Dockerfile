@@ -1,23 +1,28 @@
-# Use official Node.js LTS image
-FROM node:18-alpine
+ARG BUILD_FROM
+FROM $BUILD_FROM
 
-# Set working directory
-WORKDIR /usr/src/app
+# Install requirements for addon
+RUN apk add --no-cache \
+    nodejs \
+    npm
 
-# Copy package.json and package-lock.json if available
+# Create app directory
+WORKDIR /app
+
+# Copy package files first for better caching
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install --production
 
-# Copy application source code
-COPY . .
+# Copy application files
+COPY server.js ./
 
-# Set default port value
-ENV PORT=3000
+# Copy addon run script
+COPY run.sh /
+RUN chmod a+x /run.sh
 
-# Expose the port the app runs on
-EXPOSE ${PORT}
+# Expose port
+EXPOSE 3000
 
-# Start the server
-CMD ["node", "server.js"]
+CMD [ "/run.sh" ]

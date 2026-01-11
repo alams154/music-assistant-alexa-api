@@ -1,0 +1,26 @@
+name: Music Assistant Alexa API Addon
+version: "1.0.0"
+slug: music_assistant_alexa_api
+description: "API bridge between Music Assistant and Alexa skill"
+url: "https://github.com/mcinnes01/music-assistant-alexa-api"
+arch:
+  - armhf
+  - armv7
+  - aarch64
+  - amd64
+  - i386
+startup: application
+boot: auto
+init: false
+ports:
+  3000/tcp: 3000
+ports_description:
+  3000/tcp: "API endpoint port"
+options:
+  username: ""
+  password: ""
+  port: 3000
+schema:
+  username: str?
+  password: str?
+  port: port
